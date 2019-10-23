@@ -2,4 +2,4 @@
 Simple CRUD implementation using Gin Framework (Golang Framework) and GORM lib
 
 
-```go run main```
+```go run main.go```

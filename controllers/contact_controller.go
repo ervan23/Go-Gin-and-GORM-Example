@@ -85,3 +85,18 @@ func UpdateContact(db *gorm.DB) func(*gin.Context) {
 		})
 	}
 }
+
+func DeleteContact(db *gorm.DB) func(*gin.Context) {
+	return func(c *gin.Context) {
+		var contact models.Contact
+		db.Where("id = ?", c.Param("Id")).First(&contact)
+		db.Delete(&contact)
+
+		c.JSON(http.StatusOK, response{
+			Status: 200,
+			Error:  false,
+			Data:   nil,
+			Items:  nil,
+		})
+	}
+}

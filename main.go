@@ -30,6 +30,7 @@ func main() {
 	r.GET("/:Id", controllers.GetContact(db))
 	r.POST("/", controllers.Create(db))
 	r.PUT("/:Id", controllers.UpdateContact(db))
+	r.DELETE("/:Id", controllers.DeleteContact(db))
 
 	r.Run(":2309")
 }

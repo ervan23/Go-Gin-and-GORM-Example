@@ -65,3 +65,23 @@ func GetContact(db *gorm.DB) func(*gin.Context) {
 		})
 	}
 }
+
+func UpdateContact(db *gorm.DB) func(*gin.Context) {
+	return func(c *gin.Context) {
+		var contact, params models.Contact
+		c.BindJSON(&params)
+		db.Where("id = ?", c.Param("Id")).First(&contact)
+		db.Model(&contact).Updates(models.Contact{
+			Name:  params.Name,
+			Phone: params.Phone,
+			Email: params.Email,
+		})
+
+		c.JSON(http.StatusOK, response{
+			Status: 200,
+			Error:  false,
+			Data:   contact,
+			Items:  nil,
+		})
+	}
+}

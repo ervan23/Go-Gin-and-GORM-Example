@@ -3,6 +3,8 @@ package controllers
 import (
 	"net/http"
 
+	"github.com/google/uuid"
+
 	"github.com/jinzhu/gorm"
 
 	"github.com/gin-gonic/gin"
@@ -20,10 +22,15 @@ type response struct {
 
 func Create(db *gorm.DB) func(*gin.Context) {
 	return func(c *gin.Context) {
+		var contact models.Contact
+		contact.Id = uuid.New().String()
+		c.BindJSON(&contact)
+		db.Create(&contact)
+
 		c.JSON(http.StatusOK, response{
 			Status: 200,
 			Error:  false,
-			Data:   nil,
+			Data:   contact,
 			Items:  nil,
 		})
 	}
@@ -34,7 +41,6 @@ func Index(db *gorm.DB) func(c *gin.Context) {
 		var contacts []models.Contact
 
 		db.Find(&contacts)
-		defer db.Close()
 
 		res := response{
 			Status: 200,

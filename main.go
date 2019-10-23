@@ -24,9 +24,11 @@ func main() {
 		db.AutoMigrate(&models.Contact{})
 	}
 
-	r.GET("/", controllers.Index)
-	r.GET("/:Id", controllers.GetContact)
-	r.POST("/", controllers.Create)
+	defer db.Close()
+
+	r.GET("/", controllers.Index(db))
+	r.GET("/:Id", controllers.GetContact(db))
+	r.POST("/", controllers.Create(db))
 
 	r.Run(":2309")
 }

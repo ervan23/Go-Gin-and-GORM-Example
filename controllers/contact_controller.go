@@ -54,6 +54,14 @@ func Index(db *gorm.DB) func(c *gin.Context) {
 
 func GetContact(db *gorm.DB) func(*gin.Context) {
 	return func(c *gin.Context) {
+		var contact models.Contact
+		db.Where("id = ?", c.Param("Id")).First(&contact)
 
+		c.JSON(http.StatusOK, response{
+			Status: 200,
+			Error:  false,
+			Data:   contact,
+			Items:  nil,
+		})
 	}
 }
